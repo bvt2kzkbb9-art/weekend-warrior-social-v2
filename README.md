@@ -24,3 +24,11 @@ RPG Social Network — Arena Wojowników
 ## Live
 
 https://[username].github.io/weekend-warrior-social-v2/
+git clone https://github.com/[YOUR_USERNAME]/weekend-warrior-social-v2.git
+cd weekend-warrior-social-v2
+
+# Skopiuj WSZYSTKIE pliki z /outputs/ tutaj
+
+git add -A
+git commit -m "Initial: Weekend Warrior Social V2"
+git push origin main
