@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Profil — Weekend Warrior Social</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<div class="app-container">
+  <header class="top-bar">
+    <h1 class="app-title">👤 Mój Profil</h1>
+    <nav class="top-bar-right">
+      <button id="logout-btn" class="icon-btn">🚪</button>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="page-container">
+      <div class="profile-header">
+        <div class="profile-avatar-lg" id="profile-avatar">⚔️</div>
+        <h2 id="profile-name" class="profile-name">Wojownik</h2>
+        <p id="profile-username" class="profile-username">@wojownik</p>
+      </div>
+
+      <section class="section">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number" id="stat-level">1</div>
+            <div class="stat-name">Poziom</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="stat-xp">0</div>
+            <div class="stat-name">XP</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="stat-rank">Rookie</div>
+            <div class="stat-name">Ranga</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">🏰 Arena</a>
+    <a href="feed.html" class="nav-item">📜 Kroniki</a>
+    <a href="challenges.html" class="nav-item nav-hero">⚔️ Misje</a>
+    <a href="ranking.html" class="nav-item">🏆 Chwała</a>
+  </nav>
+</div>
+
+<script type="module">
+  import { checkAuth, logout } from './js/auth.js';
+
+  checkAuth((user, userData) => {
+    if (!user) window.location.href = 'login.html';
+    if (userData) {
+      document.getElementById('profile-name').textContent = userData.displayName || 'Wojownik';
+      document.getElementById('profile-username').textContent = '@' + (userData.username || user.email.split('@')[0]);
+      document.getElementById('stat-level').textContent = userData.level || 1;
+      document.getElementById('stat-xp').textContent = userData.points || 0;
+      document.getElementById('stat-rank').textContent = userData.rank || 'Rookie';
+    }
+  });
+
+  document.getElementById('logout-btn').addEventListener('click', () => logout());
+</script>
+</body>
+</html>

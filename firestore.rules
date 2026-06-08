@@ -1,0 +1,58 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuth() { return request.auth != null; }
+    function isOwner(uid) { return isAuth() && request.auth.uid == uid; }
+
+    match /users/{uid} {
+      allow read: if isAuth();
+      allow create: if isOwner(uid);
+      allow update: if isOwner(uid);
+    }
+
+    match /posts/{docId} {
+      allow read: if isAuth();
+      allow create: if isAuth() && request.resource.data.authorId == request.auth.uid;
+      allow update: if isAuth() && (resource.data.authorId == request.auth.uid);
+      allow delete: if isAuth() && resource.data.authorId == request.auth.uid;
+    }
+
+    match /friend_requests/{docId} {
+      allow read: if isAuth() && (resource.data.senderId == request.auth.uid || resource.data.receiverId == request.auth.uid);
+      allow create: if isAuth() && request.resource.data.senderId == request.auth.uid;
+      allow update: if isAuth() && (resource.data.senderId == request.auth.uid || resource.data.receiverId == request.auth.uid);
+    }
+
+    match /friends/{docId} {
+      allow read: if isAuth();
+      allow create: if isAuth();
+      allow delete: if isAuth();
+    }
+
+    match /conversations/{convId} {
+      allow read: if isAuth() && request.auth.uid in resource.data.participants;
+      allow create: if isAuth();
+      allow update: if isAuth();
+    }
+
+    match /conversations/{convId}/messages/{msgId} {
+      allow read: if isAuth();
+      allow create: if isAuth() && request.resource.data.senderId == request.auth.uid;
+    }
+
+    match /notifications/{uid}/items/{notifId} {
+      allow read: if isOwner(uid);
+      allow create: if isAuth();
+    }
+
+    match /challenges/{docId} {
+      allow read: if isAuth();
+      allow create: if isAuth();
+      allow update: if isAuth();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

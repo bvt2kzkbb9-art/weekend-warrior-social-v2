@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Kroniki — Weekend Warrior Social</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<div class="app-container">
+  <header class="top-bar">
+    <h1 class="app-title">📜 Kroniki</h1>
+  </header>
+  <main class="main-content">
+    <div class="page-container">
+      <div id="feed-posts"></div>
+    </div>
+  </main>
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">🏰 Arena</a>
+    <a href="feed.html" class="nav-item active">📜 Kroniki</a>
+    <a href="challenges.html" class="nav-item nav-hero">⚔️ Misje</a>
+    <a href="ranking.html" class="nav-item">🏆 Chwała</a>
+  </nav>
+</div>
+<script type="module">
+  import { checkAuth } from './js/auth.js';
+  checkAuth((user) => {
+    if (!user) window.location.href = 'login.html';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Rejestracja — Weekend Warrior Social</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body style="background: var(--bg-primary); display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 1rem;">
+<div style="width: 100%; max-width: 400px;">
+  <div style="background: linear-gradient(135deg, var(--bg-card), var(--bg-tertiary)); border: 1px solid var(--gold-dark); border-radius: 12px; padding: 2rem; text-align: center;">
+    <h1 style="font-size: 32px; margin-bottom: 1rem;">⚔️</h1>
+    <h2 style="font-size: 24px; color: var(--gold-light); margin-bottom: 2rem;">Rejestracja</h2>
+
+    <form id="register-form" style="display: flex; flex-direction: column; gap: 1rem;">
+      <input type="text" id="displayName" placeholder="Nazwa użytkownika" required style="padding: 12px; background: var(--bg-tertiary); border: 1px solid var(--gold-dark); border-radius: 8px; color: var(--text-primary); font-size: 16px;"/>
+      <input type="email" id="email" placeholder="Email" required style="padding: 12px; background: var(--bg-tertiary); border: 1px solid var(--gold-dark); border-radius: 8px; color: var(--text-primary); font-size: 16px;"/>
+      <input type="password" id="password" placeholder="Hasło" required style="padding: 12px; background: var(--bg-tertiary); border: 1px solid var(--gold-dark); border-radius: 8px; color: var(--text-primary); font-size: 16px;"/>
+      <input type="password" id="confirm-password" placeholder="Potwierdź hasło" required style="padding: 12px; background: var(--bg-tertiary); border: 1px solid var(--gold-dark); border-radius: 8px; color: var(--text-primary); font-size: 16px;"/>
+      <button type="submit" style="padding: 12px; background: linear-gradient(135deg, var(--gold-primary), var(--gold-light)); color: var(--bg-primary); border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 16px;">Stwórz konto</button>
+    </form>
+
+    <p style="margin-top: 1.5rem; color: var(--text-secondary); font-size: 14px;">
+      Masz już konto? <a href="login.html" style="color: var(--gold-light);">Zaloguj się</a>
+    </p>
+  </div>
+</div>
+
+<script type="module">
+  import { registerWithEmail, checkAuth } from './js/auth.js';
+
+  checkAuth((user) => {
+    if (user) window.location.href = 'index.html';
+  });
+
+  document.getElementById('register-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const pw = document.getElementById('password').value;
+    const conf = document.getElementById('confirm-password').value;
+    
+    if (pw !== conf) {
+      alert('Hasła się nie zgadzają!');
+      return;
+    }
+
+    try {
+      await registerWithEmail(
+        document.getElementById('email').value,
+        pw,
+        document.getElementById('displayName').value
+      );
+      window.location.href = 'index.html';
+    } catch (err) {}
+  });
+</script>
+</body>
+</html>
